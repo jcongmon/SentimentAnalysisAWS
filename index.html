@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Sentiment Analysis Web App</title>
+        <meta charset="utf-8">
+        <meta name="viewport"  content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+        <script>
+         "use strict";
+         function submitForm(oFormElement) {
+             var xhr = new XMLHttpRequest();
+             xhr.onload = function() {
+                 var result = parseFloat(xhr.responseText);
+                 var resultElement = document.getElementById('result');
+                 if (result == 0) {
+                     resultElement.className = 'bg-danger';
+                     resultElement.innerHTML = 'The input headline(s) indicate a DROP in the Dow Jones Industrial Average!';
+                 } else {
+                     resultElement.className = 'bg-success';
+                     resultElement.innerHTML = 'The input headline(s) indicate a RISE in the Dow Jones Industrial Average!';
+                 }
+             }
+             xhr.open (oFormElement.method, oFormElement.action, true);
+             var review = document.getElementById('review');
+             xhr.send (review.value);
+             return false;
+         }
+        </script>
+
+    </head>
+    <body>
+
+        <div class="container">
+            <h1>Are the current news headlines positive, or negative for the DJIA?</h1>
+            <p>Enter headlines below.</p>
+            <form method="POST"
+                  action="https://p17sz9tl8d.execute-api.us-east-1.amazonaws.com"
+                  onsubmit="return submitForm(this);" >                     
+                <div class="form-group">
+                    <label for="review">Review:</label>
+                    <textarea class="form-control"  rows="5" id="review">Input news headline(s) here.</textarea>
+                </div>
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+            <h1 class="bg-success" id="result"></h1>
+        </div>
+    </body>
+</html>
